@@ -1,0 +1,15 @@
+<html>
+<head>
+	{% if title %}
+		<title>{{ title }}</title>
+	{% else %}
+		<title>flask</title>
+	{% endif %}
+</head>
+<body>
+	<h1><a href="/index">Home</a> <a href="/about">About</a></h1>
+	<h1>Hello, {{ data.name }}. Welcome to your first {{ data.technology }} application!</h1>
+	<hr>
+    {% block content %}{% endblock %}	
+</body>
+</html>

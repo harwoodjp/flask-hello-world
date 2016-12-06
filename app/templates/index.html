@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+	<h2>Flask is:</h2>
+	<ul>
+	{% for feature in features %}
+		<li>{{ feature }}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+	<h2>About {{technology}}:</h2>
+	<ul>
+		{% for point in info %}
+			<li>{{ point }}</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
