@@ -6,10 +6,23 @@
 		<title>flask</title>
 	{% endif %}
 </head>
-<body>
-	<h1><a href="/index">Home</a> <a href="/about">About</a></h1>
-	<h1>Hello, {{ data.name }}. Welcome to your first {{ data.technology }} application!</h1>
-	<hr>
+<body style="margin-left:10%; margin-right:10%">
+	<h2 style="text-align:right"><a href="/">Home</a> <a href="/about">About</a> <a href="/login">Login</a></h2>
+	<h1 style="text-align:center">
+		Hello, {{ data.name }}. Welcome to your first {{ data.technology }} application!
+	</h1>
+	<!-- flash messages -->	
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }} </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}	
+	<!-- flash messages -->	
+    <hr>
     {% block content %}{% endblock %}	
 </body>
 </html>

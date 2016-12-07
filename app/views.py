@@ -1,5 +1,6 @@
-from flask import render_template, redirect
 from app import app
+from flask import flash, redirect, render_template
+from .forms import LoginForm
 
 data = {'name' : 'Justin', 'technology' : 'Flask'}
 info = {
@@ -9,7 +10,6 @@ info = {
 
 
 @app.route('/')
-@app.route('/index')
 def index():
 	global data
 	features = [
@@ -23,7 +23,7 @@ def index():
 def about():
 	global data
 	subjects = ["python", "templating engine"]
-	return render_template('about.html', data=data, subjects=subjects)
+	return render_template('about.html', data=data, title='about', subjects=subjects)
 
 @app.route('/about/<string:technology>')
 def about_technology(technology):
@@ -33,5 +33,26 @@ def about_technology(technology):
 	if technology not in info:
 		return redirect("/about")
 	else:
-		return render_template('about_detail.html', data=data, 
+		return render_template('about_detail.html', data=data, title='about %s' % technology,
 			technology=technology.capitalize(), info=info[technology])
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+	form = LoginForm()
+
+	if form.validate_on_submit():
+		flash('Login requested for OpenID="%s", remember_me=%s' % 
+			(form.openid.data, str(form.remember_me.data)))
+		return redirect('/')
+
+	return render_template('login.html', title='sign in', form=form, data=data)
+
+
+
+
+
+
+
+
+
+

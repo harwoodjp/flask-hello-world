@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+	{% for post in posts %}
+		<h1 style="margin-bottom:0">{{post[1]}}</h1>
+		{% autoescape on %}
+			<span>{{post[4]}}</span>
+		{% endautoescape %}
+		<br>
+	{% endfor %}
+{% endblock %}
