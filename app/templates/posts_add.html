@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<form action="add" method="post" name="login">
+		{{ form.hidden_tag() }}
+		<p>
+			Author:<br>
+			{{ form.author }}<br>
+		</p>
+		<p>
+			Date:<br>		
+			{{ form.date }} 
+		</p>
+		<p>
+			Title:<br>		
+			{{ form.title }} 
+		</p>
+		<p>
+			Body:<br>		
+			{{ form.body(cols="100", rows="20") }} 
+		</p>
+		<p>
+			<input type="submit" value="Post">
+		</p>
+	</form>
+{% endblock %}

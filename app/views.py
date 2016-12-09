@@ -1,6 +1,11 @@
 from app import app
 from flask import flash, redirect, render_template
-from .forms import LoginForm
+from .forms import *
+from flask_mysqldb import MySQL
+import re
+
+mysql = MySQL(app)
+
 
 data = {'name' : 'Justin', 'technology' : 'Flask'}
 info = {
@@ -8,6 +13,13 @@ info = {
 	'templating engine' : ['a way to render html fast', 'produces a pattern of elements', 'compliments repetition']
 }
 
+@app.route('/blog')
+def blog():
+	cur = mysql.connection.cursor()
+	cur.execute("select * from blog order by id desc")
+	result = cur.fetchall()
+	cur.close()
+	return render_template('posts.html', title="posts", posts=result, data = data)
 
 @app.route('/')
 def index():
@@ -36,20 +48,25 @@ def about_technology(technology):
 		return render_template('about_detail.html', data=data, title='about %s' % technology,
 			technology=technology.capitalize(), info=info[technology])
 
-@app.route('/login', methods=['GET','POST'])
-def login():
-	form = LoginForm()
+
+@app.route('/blog/add', methods=['GET','POST'])
+def add_post():
+	form = AddPost()
 
 	if form.validate_on_submit():
-		flash('Login requested for OpenID="%s", remember_me=%s' % 
-			(form.openid.data, str(form.remember_me.data)))
-		return redirect('/')
+		author = form.author.data
+		date = form.date.data
+		title = form.title.data
+		body = re.escape(form.body.data)
+		sql_string = ("insert into blog(author,date,title,body) values('%s','%s','%s','%s')" 
+				% (author,date,title,body)
+		)
+		cur = mysql.connection.cursor()
+		cur.execute(sql_string)
+		cur.close()
+		return redirect('/blog')
 
-	return render_template('login.html', title='sign in', form=form, data=data)
-
-
-
-
+	return render_template("posts_add.html", data=data, form=form)
 
 
 
